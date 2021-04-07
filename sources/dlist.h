@@ -7,10 +7,8 @@
 #include "stdlib.h"
 #include "dataframe.h"
 
-// Å¥ ³ëµå
 typedef struct _Node {
 	DataFrame* df;
-	//int df;
 	struct _Node* preNode;
 	struct _Node* nextNode;
 } Node;
