@@ -410,7 +410,7 @@ interrupt void sci1_isr(void){ (void) software_trap(); }
 // 
 //
 #pragma CODE_SEG NON_BANKED
-interrupt void sci0_isr(void){ (void) software_trap(); }
+interrupt void sci0_isr(void){ (void) sci0_handler(); }
 #pragma CODE_SEG DEFAULT
 
 //************************************************************************

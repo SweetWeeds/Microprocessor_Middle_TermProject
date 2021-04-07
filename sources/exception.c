@@ -1,9 +1,5 @@
 #include "exception.h"
 
-void write_string(char offset, const char *cStr) {
-	printf("%s\n", cStr);
-}
-
 void ExceptionHandling(ErrorCode ec) {
 	if (ec < 4) {
 		if (ec == OverDataSize) {

@@ -3,9 +3,9 @@
 #include "dataframe.h"
 
 char VALID_TABLE[6][2][5];	// VALID_TABLE[GROUP_NUM][CMD_CLASS][CMD_NUM] = DATA_FORMAT
-const u8 BYTE_SIZE_TYPE[6] = { 1, 2, 3, 4, 10, 16 };    // Byte Format ê°’ ë‹¹ Byte size
+const u8 BYTE_SIZE_TYPE[6] = { 1, 2, 3, 4, 10, 16 };    // Byte Format °ª ´ç Byte size
 
-// ì»¤ë§¨ë“œ í…Œì´ë¸” ì´ˆê¸°í™”
+// Ä¿¸Çµå Å×ÀÌºí ÃÊ±âÈ­
 void InitFormatTable() {
 	memset(VALID_TABLE, -1, sizeof(VALID_TABLE));
 	// LED
@@ -32,7 +32,7 @@ ErrorCode DataCheck(u8* buf, u8 byte_size) {
 	while (buf[byte_size_cnt] != '>' && byte_size_cnt < MAX_DATA_SIZE + 5) {
 		byte_size_cnt++;
 	}
-	// '>' ì œê±°
+	// '>' Á¦°Å
 	if (buf[byte_size_cnt] == '>')
 		buf[byte_size_cnt] = 0;
 	/* Exception */
@@ -51,36 +51,36 @@ ErrorCode DataCheck(u8* buf, u8 byte_size) {
 	return Normal;
 }
 
-// íŒŒì‹±
+// ÆÄ½Ì
 DataFrame* GetDataFrame(const u8 *buf) {
 	ErrorCode ec;
-	// ascii ì„ì‹œ ì €ì¥
+	// ascii ÀÓ½Ã ÀúÀå
 	u8 tmp[16] = { 0, };
 
-	// ë™ì í• ë‹¹
+	// µ¿ÀûÇÒ´ç
 	DataFrame* df = (DataFrame*)malloc(sizeof(DataFrame));
 
 	sscanf(buf, "<%2d%1d%2d%1d%s", &df->groupnum, &df->cmdclass, &df->cmdnum, &df->dataformat, df->data);
 
-	// ì˜ˆì™¸ ì²˜ë¦¬: OverGroupCnt (ì „ì†¡ëœ ëª…ë ¹ì˜ Group ë²ˆí˜¸ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¨)
+	// ¿¹¿Ü Ã³¸®: OverGroupCnt (Àü¼ÛµÈ ¸í·ÉÀÇ Group ¹øÈ£°¡ ¹üÀ§¸¦ ¹ş¾î³²)
 	if (df->groupnum > 5) {
 		ExceptionHandling(OverGroupCnt);
 		free(df);
 		return NULL;
 	}
-	// ì˜ˆì™¸ ì²˜ë¦¬: OverClassCnt (ì „ì†¡ëœ ëª…ë ¹ì˜ Class ë²ˆí˜¸ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¨)
+	// ¿¹¿Ü Ã³¸®: OverClassCnt (Àü¼ÛµÈ ¸í·ÉÀÇ Class ¹øÈ£°¡ ¹üÀ§¸¦ ¹ş¾î³²)
 	if (VALID_TABLE[df->groupnum][df->cmdclass][df->cmdnum] == -1) {
 		ExceptionHandling(OverClassCnt);
 		free(df);
 		return NULL;
 	}
-	// ì˜ˆì™¸ ì²˜ë¦¬: OverFormatCnt (ì „ì†¡ëœ ëª…ë ¹ì˜ Format ë²ˆí˜¸ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¨)
+	// ¿¹¿Ü Ã³¸®: OverFormatCnt (Àü¼ÛµÈ ¸í·ÉÀÇ Format ¹øÈ£°¡ ¹üÀ§¸¦ ¹ş¾î³²)
 	if (VALID_TABLE[df->groupnum][df->cmdclass][df->cmdnum] != df->dataformat) {
 		ExceptionHandling(OverFormatCnt);
 		free(df);
 		return NULL;
 	}
-	// ì˜ˆì™¸ ì²˜ë¦¬: Data í¬ê¸° ê²€ì¦
+	// ¿¹¿Ü Ã³¸®: Data Å©±â °ËÁõ
 	ec = DataCheck(df->data, BYTE_SIZE_TYPE[df->dataformat]);
 	if (ec != Normal) {
 		ExceptionHandling(ec);

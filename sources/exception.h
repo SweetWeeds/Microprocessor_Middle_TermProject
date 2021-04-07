@@ -14,11 +14,12 @@ typedef enum {
 	CantFindCmd_LED,
 	CantFindCmd_LCD,
 	Timeout,
+    DynamicAllocFailed,
+    QueueFault,
 	Normal
 } ErrorCode;
 
 // 예외처리
 void ExceptionHandling(ErrorCode ec);
-void write_string(char offset, const char *);
 
 #endif	/* EXCEPTION_H */

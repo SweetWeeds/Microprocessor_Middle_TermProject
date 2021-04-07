@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "string.h": "c"
+        "string.h": "c",
+        "dataframe.h": "c",
+        "exception.h": "c",
+        "START12.C": "cpp",
+        "seven_seg.h": "c",
+        "led.h": "c",
+        "queue.h": "c",
+        "main.h": "c"
     }
 }

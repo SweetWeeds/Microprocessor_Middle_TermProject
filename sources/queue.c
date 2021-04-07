@@ -1,20 +1,15 @@
-/* dlist.c */
+/* queue.c */
 
-#include "dlist.h"
+#include "queue.h"
 
 Node* Head = NULL;
 Node* Tail = NULL;
 
-// 에러 발생 출력
-void ERROR(const char* err_msg) {
-	// LCD에 에러를 출력
-}
-
-void Push(DataFrame* df) {
+void QueuePush(DataFrame* df) {
 	Node* newNode = (Node*)malloc(sizeof(Node));
 	// 동적할당 실패 체크
 	if (newNode == NULL) {
-		ERROR("Mem Alloc Failed");
+		//ExceptionHandling(DynamicAllocFailed);
 		return;
 	}
 	newNode->df = df;
@@ -35,11 +30,12 @@ void Push(DataFrame* df) {
 	}
 	// 예외 처리 (잘못된 핸들링)
 	else {
-		ERROR("Queue Fault");
+		//ExceptionHandling(QueueFault);
+        return;
 	}
 }
 
-DataFrame* Pop() {
+DataFrame* QueuePop() {
 	// 헤드가 비어있지 않은 경우
 	if (Head != NULL) {
 		Node* tmpNode = Head;
@@ -64,7 +60,7 @@ DataFrame* Pop() {
 }
 
 // 큐 앞 조회
-DataFrame* Front() {
+DataFrame* QueueFront() {
 	// 헤드가 비어있지 않은 경우
 	if (Head != NULL) {
 		return Head->df;
@@ -75,4 +71,4 @@ DataFrame* Front() {
 	}
 }
 
-/* dlist.c */
+/* queue.c */

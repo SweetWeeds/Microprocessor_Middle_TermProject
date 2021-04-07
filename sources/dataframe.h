@@ -8,8 +8,8 @@
 #include "stdlib.h"
 #include "exception.h"
 
-#define MAX_FRAME_SIZE  24	// ìµœëŒ€ ë°ì´í„° í”„ë ˆì„ í¬ê¸°: 24ë°”ì´íŠ¸
-#define MAX_DATA_SIZE   17	// ìµœëŒ€ ë°ì´í„° í¬ê¸°
+#define MAX_FRAME_SIZE  24	// ÃÖ´ë µ¥ÀÌÅÍ ÇÁ·¹ÀÓ Å©±â: 24¹ÙÀÌÆ®
+#define MAX_DATA_SIZE   17	// ÃÖ´ë µ¥ÀÌÅÍ Å©±â
 
 #define D1  0
 #define D2  1
@@ -28,21 +28,21 @@
 #define CMD_CLASS_CONTROL 0x00  // PC -> MCU
 #define CMD_CLASS_UPDATE  0x01  // MCU -> PC
 
-#define CMD_LED_CTRL_ON_SEL  0	// LED ê°œë³„ ì œì–´ (ON)
-#define CMD_LED_CTRL_DEC     1  // LED ì œì–´ (10ì§„ìˆ˜)
-#define CMD_LED_CTRL_HEX     2  // LED ì œì–´ (16ì§„ìˆ˜)
-#define CMD_LED_CTRL_BIN     3  // LED ì œì–´ (2ì§„ìˆ˜)
-#define CMD_LED_CTRL_OFF_SEL 4  // LED ê°œë³„ ì œì–´ (OFF)
-#define CMD_SEG_UPDATE_LED_CNT 0  // í˜„ì¬ ONëœ LEDì˜ ê°œìˆ˜ í‘œì‹œ
-#define CMD_SWITCH_UPDATE_STAT 0  // ìŠ¤ìœ„ì¹˜2ì˜ ìƒíƒœ ì •ë³´
-#define CMD_LCD_CTRL_LOW   0    // LCDì˜ Low ë¼ì¸ ì…ë ¥ ê°’
-#define CMD_LCD_CTRL_HIGH  1    // LCDì˜ High ë¼ì¸ ì…ë ¥ ê°’
-#define CMD_ADC_UPDATE     0    // í˜„ì¬ ADC ê°’
+#define CMD_LED_CTRL_ON_SEL  0	// LED °³º° Á¦¾î (ON)
+#define CMD_LED_CTRL_DEC     1  // LED Á¦¾î (10Áø¼ö)
+#define CMD_LED_CTRL_HEX     2  // LED Á¦¾î (16Áø¼ö)
+#define CMD_LED_CTRL_BIN     3  // LED Á¦¾î (2Áø¼ö)
+#define CMD_LED_CTRL_OFF_SEL 4  // LED °³º° Á¦¾î (OFF)
+#define CMD_SEG_UPDATE_LED_CNT 0  // ÇöÀç ONµÈ LEDÀÇ °³¼ö Ç¥½Ã
+#define CMD_SWITCH_UPDATE_STAT 0  // ½ºÀ§Ä¡2ÀÇ »óÅÂ Á¤º¸
+#define CMD_LCD_CTRL_LOW   0    // LCDÀÇ Low ¶óÀÎ ÀÔ·Â °ª
+#define CMD_LCD_CTRL_HIGH  1    // LCDÀÇ High ¶óÀÎ ÀÔ·Â °ª
+#define CMD_ADC_UPDATE     0    // ÇöÀç ADC °ª
 #define CMD_SYS_UPDATE     0    // Error Code
 
 #define ETX_VALID_BIT 0x00
 
-// Byte í¬ë§·
+// Byte Æ÷¸Ë
 #define BYTE_FORMAT_D1    0
 #define BYTE_FORMAT_D2    1
 #define BYTE_FORMAT_D3    2
@@ -54,18 +54,19 @@ typedef unsigned char  u8;		// 1 Byte
 typedef unsigned short u16;		// 2 Byte
 typedef unsigned int   u32;		// 4 Byte
 
-// ë°ì´í„° í”„ë ˆì„ (íŒŒì‹± ì™„ë£Œ)
-typedef struct _DataFrame {
+// µ¥ÀÌÅÍ ÇÁ·¹ÀÓ (ÆÄ½Ì ¿Ï·á)
+typedef struct {
 	u16 groupnum;
-	u8 cmdclass;
+	u16 cmdclass;
 	u16 cmdnum;
-	u8 dataformat;
+	u16 dataformat;
 	u8 data[MAX_DATA_SIZE];
 } DataFrame;
 
 /* Function Prototypes */
-u32 GetBytes(u8* buf, u8 byte_size, u8 data[]);
-DataFrame* GetDataFrame(const u8 *buf);
+void InitFormatTable();
+DataFrame* GetDataFrame(const u8*);
+ErrorCode DataCheck(u8*, u8);
 /* Function Prototypes */
 
 #endif /* DATAFRAME_H */

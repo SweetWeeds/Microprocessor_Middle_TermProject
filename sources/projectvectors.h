@@ -19,6 +19,7 @@
 
 /*Include Files*/
 #include "projectglobals.h"
+#include "sci.h"
 
 /*Local Prototypes*/
 void software_trap(void);
