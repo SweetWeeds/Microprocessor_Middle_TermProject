@@ -3,6 +3,7 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "sci.h"
 
 // 에러코드 정의
 typedef enum {

@@ -1,14 +1,16 @@
 
-#include "main.h"
+//#include "main.h"
 #include "sci.h"
+#include "queue.h"
+
 
 unsigned char *txbuffer_sci0; //text를 저장하는 버퍼이다. 
 int txoffset_sci0;            //text문자열 길이를 알기위해 필요한 변수이다.
 unsigned char *rxbuffer_sci0; //rx를 저장하는 버퍼이다.
 unsigned int rxoffset_sci0 = 0;
 
-extern Node* Head;
-extern Node* Tail;
+//extern Node* Head;
+//extern Node* Tail;
 
 /*********************************************************/
 /*  시리얼 통신 0번 채널을 초기화 한다.				       */

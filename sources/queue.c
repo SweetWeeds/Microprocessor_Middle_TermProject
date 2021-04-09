@@ -2,6 +2,8 @@
 
 #include "queue.h"
 
+typedef struct _Node Node;
+
 Node* Head = NULL;
 Node* Tail = NULL;
 

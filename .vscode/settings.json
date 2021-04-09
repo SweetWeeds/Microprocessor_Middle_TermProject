@@ -7,6 +7,7 @@
         "seven_seg.h": "c",
         "led.h": "c",
         "queue.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "sci.h": "c"
     }
 }

@@ -29,11 +29,11 @@ void InitFormatTable() {
 
 ErrorCode DataCheck(u8* buf, u8 byte_size) {
 	u32 byte_size_cnt = 0;
-	while (buf[byte_size_cnt] != '>' && byte_size_cnt < MAX_DATA_SIZE + 5) {
+	while (buf[byte_size_cnt] != ' ' && byte_size_cnt < MAX_DATA_SIZE + 5) {
 		byte_size_cnt++;
 	}
 	// '>' 제거
-	if (buf[byte_size_cnt] == '>')
+	if (buf[byte_size_cnt] == ' ')
 		buf[byte_size_cnt] = 0;
 	/* Exception */
 	// Timeout
@@ -60,7 +60,7 @@ DataFrame* GetDataFrame(const u8 *buf) {
 	// 동적할당
 	DataFrame* df = (DataFrame*)malloc(sizeof(DataFrame));
 
-	sscanf(buf, "<%2d%1d%2d%1d%s", &df->groupnum, &df->cmdclass, &df->cmdnum, &df->dataformat, df->data);
+	sscanf(buf, "<%2d%1d%2d%1d%[^>]s", &df->groupnum, &df->cmdclass, &df->cmdnum, &df->dataformat, df->data);
 
 	// 예외 처리: OverGroupCnt (전송된 명령의 Group 번호가 범위를 벗어남)
 	if (df->groupnum > 5) {

@@ -1,55 +1,95 @@
 #include "main.h"
 
+DataFrame* df;
 unsigned char RX[35];
-extern Node* Head;
-extern Node* Tail;
+unsigned char LCD_LINE_1[17];
+unsigned char LCD_LINE_2[17];
+unsigned int digit = 0;
+//extern Node* Head;
+//extern Node* Tail;
+extern const u8 BYTE_SIZE_TYPE[6];
+
+void LED_CONTROL(DataFrame* df) {
+    unsigned int idx;
+    switch(df->cmdnum) {
+    case CMD_LED_CTRL_ON_SEL:
+        digit = digit | (0b1 << atoi(df->data));
+        set_led(digit);
+        break;
+    case CMD_LED_CTRL_DEC:
+        sscanf(df->data, "%d", &digit);
+        set_led(digit);
+        break;
+    case CMD_LED_CTRL_HEX:
+        sscanf(df->data, "%x", &digit);
+        set_led(digit);
+        break;
+    case CMD_LED_CTRL_BIN:
+        for (idx = 0; idx < BYTE_SIZE_TYPE[df->dataformat]; idx++) {
+            digit = (digit | (*(df->data + idx) - '0' ? 0b1 : 0b0)) << 1;
+        }
+        set_led(digit);
+        break;
+    case CMD_LED_CTRL_OFF_SEL:
+        digit = (digit & ~(0b1 << atoi(df->data)));
+        set_led(digit);
+        break;
+    }
+}
+
+void LCD_CONTROL(DataFrame* df) {
+    // Low ¶óÀÎ
+    if (df->cmdnum == 0) {
+        sprintf(LCD_LINE_1, "Value 1 = %3d", df->data);
+        write_string(0x00, LCD_LINE_1);
+    }
+    // High ¶óÀÎ
+    else if (df->cmdnum == 1) {
+        sprintf(LCD_LINE_2, "Value 2 = %3d", df->data);
+        write_string(0x40, LCD_LINE_2);
+    }
+}
 
 void main ()
 {
-    // ì¸í„°ëŸ½íŠ¸ ì´ˆê¸°í™”
+    // ÀÎÅÍ·´Æ® ÃÊ±âÈ­
     int_disable();
     ini_interrupt();
     int_enable();
     xint_enable();
 
-    // ì‹œë¦¬ì–¼ ì´ˆê¸°í™”
+    // ½Ã¸®¾ó ÃÊ±âÈ­
     init_sci0(19200, RX);
     write_sci0("SCI OK");
 
-    // LED ì´ˆê¸°í™”
+    // LED ÃÊ±âÈ­
     init_led();
 
-    // LCD ì´ˆê¸°í™”
+    // LCD ÃÊ±âÈ­
     init_LCD();
     write_string(0x00, "Init Complete");
 
+    // DataFrame Å×ÀÌºí ÃÊ±âÈ­
+    InitFormatTable();
+
 	//Insert Application Software Here.
 	for (;;) {
-        // íì—ì„œ ë°ì´í„° ì½ì–´ì˜¤ê¸°
-        DataFrame* df = QueuePop();
-        // ë„ í¬ì¸í„° ì²´í¬
+        // Å¥¿¡¼­ µ¥ÀÌÅÍ ÀÐ¾î¿À±â
+        df = QueuePop();
+        // ³Î Æ÷ÀÎÅÍ Ã¼Å©
         if (df) {
-            // ëª…ë ¹ì–´ ì²˜ë¦¬
-            switch (df->groupnum) {
+            set_inst_register(CODE_CLR_DISP);
+            // ¸í·É¾î Ã³¸®
+            switch (df->cmdnum) {
             case GROUP_LED:
-                write_string(0x00, "GROUP LED");
-                break;
-            case GROUP_SEG:
-                write_string(0x00, "GROUP SEG");
-                break;
-            case GROUP_SWITCH:
-                write_string(0x00, "GROUP SWITCH");
+                LED_CONTROL(df);
                 break;
             case GROUP_LCD:
-                write_string(0x00, "GROUP LCD");
-                break;
-            case GROUP_ADC:
-                write_string(0x00, "GROUP ADC");
-                break;
-            case GROUP_SYS:
-                write_string(0x00, "GROUP SYS");
+                LCD_CONTROL(df);
                 break;
             }
+            free(df);
+            df = NULL;
         }
     }
 }
