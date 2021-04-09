@@ -19,7 +19,7 @@ void LED_CONTROL(DataFrame* df) {
         break;
     case CMD_LED_CTRL_BIN:
         for (idx = 0; idx < BYTE_SIZE_TYPE[df->dataformat]; idx++) {
-            led_digit = (led_digit | (*(df->data + idx) - '0' ? 0b1 : 0b0)) << 1;
+            led_digit |= ( ( *(df->data + 9 - idx) - '0' ) ? 0b1 : 0b0) << idx;
         }
         break;
     case CMD_LED_CTRL_OFF_SEL:

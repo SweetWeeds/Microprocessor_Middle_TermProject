@@ -48,11 +48,11 @@ Entry point: 0x4029 (_Startup)
 _startupData is allocated at 0x4039 and uses 11 Bytes
 extern struct _tagStartup {
   unsigned flags          0
-  _PFunc   main           0x59EC    (main)
+  _PFunc   main           0x59F1    (main)
   long     stackOffset    0x1C65
   unsigned nofZeroOut     1
   _Range   pZeroOut       0x1000     2150
-  _Copy    *toCopyDownBeg 0x632A
+  _Copy    *toCopyDownBeg 0x632F
 } _startupData;
 
 *********************************************************************************************
@@ -64,8 +64,8 @@ Section Name                    Size  Type     From       To       Segment
 .rodata                          222     R     0x4048     0x4125   ROM_4000
 .rodata1                         170     R     0x4126     0x41CF   ROM_4000
 NON_BANKED                       228     R     0x41D0     0x42B3   ROM_4000
-.text                           7023     R     0x42B4     0x5E22   ROM_4000
-.copy                              2     R     0x632A     0x632B   ROM_4000
+.text                           7028     R     0x42B4     0x5E27   ROM_4000
+.copy                              2     R     0x632F     0x6330   ROM_4000
 .abs_section_0                    48   N/I        0x0       0x2F   .absSeg0
 .abs_section_30                    4   N/I       0x30       0x33   .absSeg1
 .abs_section_34                   12   N/I       0x34       0x3F   .absSeg2
@@ -91,12 +91,12 @@ NON_BANKED                       228     R     0x41D0     0x42B3   ROM_4000
 .bss                              18   R/W     0x1000     0x1011   RAM
 HEAP_SEGMENT                    2000   R/W     0x1012     0x17E1   RAM
 .common                          132   R/W     0x17E2     0x1865   RAM
-RUNTIME                         1287     R     0x5E23     0x6329   ROM_4000
+RUNTIME                         1287     R     0x5E28     0x632E   ROM_4000
 .stack                          1024   R/W     0x1866     0x1C65   RAM
 .vectSeg22_vect                  116     R     0xFF8C     0xFFFF   .vectSeg22
 
 Summary of section sizes per section type:
-READ_ONLY (R):        23A0 (dec:     9120)
+READ_ONLY (R):        23A5 (dec:     9125)
 READ_WRITE (R/W):      C66 (dec:     3174)
 NO_INIT (N/I):         2AC (dec:      684)
 
@@ -233,71 +233,71 @@ MODULE:                 -- ALLOC.C.o (ansis.lib) --
      free_ptr                                  1008       2       2       8   .bss        
 MODULE:                 -- FADD.C.o (ansis.lib) --
 - PROCEDURES:
-     F_ADDKL                                   5E23      67     103       1   RUNTIME     
-     _FADD                                     5E8A      15      21       6   RUNTIME     
-     _FSUB                                     5E9F      13      19       2   RUNTIME     
-     _FNEG                                     5EB2       B      11       2   RUNTIME     
+     F_ADDKL                                   5E28      67     103       1   RUNTIME     
+     _FADD                                     5E8F      15      21       6   RUNTIME     
+     _FSUB                                     5EA4      13      19       2   RUNTIME     
+     _FNEG                                     5EB7       B      11       2   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FANSI.C.o (ansis.lib) --
 - PROCEDURES:
-     F_FREXP                                   5EBD      1F      31       1   RUNTIME     
-     frexpf                                    5EDC      19      25       1   RUNTIME     
+     F_FREXP                                   5EC2      1F      31       1   RUNTIME     
+     frexpf                                    5EE1      19      25       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FCMP.C.o (ansis.lib) --
 - PROCEDURES:
-     _FCMP                                     5EF5      26      38       5   RUNTIME     
+     _FCMP                                     5EFA      26      38       5   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FCONV.C.o (ansis.lib) --
 - PROCEDURES:
-     F_TOLONGK                                 5F1B      33      51       1   RUNTIME     
-     F_FRLONGK                                 5F4E      1F      31       2   RUNTIME     
-     _FSFLOAT                                  5F6D      12      18       3   RUNTIME     
-     _FUFLOAT                                  5F7F      12      18       1   RUNTIME     
-     _FSTRUNC                                  5F91      11      17       1   RUNTIME     
-     _FUTRUNC                                  5FA2       3       3       2   RUNTIME     
+     F_TOLONGK                                 5F20      33      51       1   RUNTIME     
+     F_FRLONGK                                 5F53      1F      31       2   RUNTIME     
+     _FSFLOAT                                  5F72      12      18       3   RUNTIME     
+     _FUFLOAT                                  5F84      12      18       1   RUNTIME     
+     _FSTRUNC                                  5F96      11      17       1   RUNTIME     
+     _FUTRUNC                                  5FA7       3       3       2   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FMUL.C.o (ansis.lib) --
 - PROCEDURES:
-     F_DIVKL                                   5FA5      8E     142       1   RUNTIME     
-     F_MULKL                                   6033      58      88       1   RUNTIME     
-     _FMUL                                     608B      14      20      10   RUNTIME     
-     _FDIV                                     609F      1E      30       4   RUNTIME     
+     F_DIVKL                                   5FAA      8E     142       1   RUNTIME     
+     F_MULKL                                   6038      58      88       1   RUNTIME     
+     _FMUL                                     6090      14      20      10   RUNTIME     
+     _FDIV                                     60A4      1E      30       4   RUNTIME     
 - VARIABLES:
 MODULE:                 -- FREGS.C.o (ansis.lib) --
 - PROCEDURES:
-     F_PULK                                    60BD      15      21       4   RUNTIME     
-     F_PULL                                    60D2      15      21       4   RUNTIME     
-     F_PSHK                                    60E7      13      19       6   RUNTIME     
-     F_TLK                                     60FA       D      13       1   RUNTIME     
-     F_XGKL                                    6107      21      33       2   RUNTIME     
-     F_CLRK                                    6128       B      11       2   RUNTIME     
-     F_MAXK                                    6133       9       9       2   RUNTIME     
-     F_NORMK                                   613C      3E      62       4   RUNTIME     
+     F_PULK                                    60C2      15      21       4   RUNTIME     
+     F_PULL                                    60D7      15      21       4   RUNTIME     
+     F_PSHK                                    60EC      13      19       6   RUNTIME     
+     F_TLK                                     60FF       D      13       1   RUNTIME     
+     F_XGKL                                    610C      21      33       2   RUNTIME     
+     F_CLRK                                    612D       B      11       2   RUNTIME     
+     F_MAXK                                    6138       9       9       2   RUNTIME     
+     F_NORMK                                   6141      3E      62       4   RUNTIME     
 - VARIABLES:
 MODULE:                 -- rtshc12.c.o (ansis.lib) --
 - PROCEDURES:
-     _BDIVMODS                                 617A       B      11       4   RUNTIME     
-     _ISHL                                     6185       B      11       3   RUNTIME     
-     _LCMP_P                                   6190      15      21       4   RUNTIME     
-     _LNEG                                     61A5       D      13       3   RUNTIME     
-     _LMULS16x32                               61B2      1F      31       1   RUNTIME     
-     _lDivMod                                  61D1      BE     190       2   RUNTIME     
-     _LDIVU                                    628F       E      14       2   RUNTIME     
-     _NEG_P                                    629D       F      15       1   RUNTIME     
-     _LMODU                                    62AC      11      17       1   RUNTIME     
-     _ILSEXT                                   62BD       7       7       7   RUNTIME     
-     _CASE_DIRECT_BYTE                         62C4       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        62C9      14      20       5   RUNTIME     
-     _CASE_SEARCH_8                            62DD      17      23       2   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       62F4      1A      26       1   RUNTIME     
+     _BDIVMODS                                 617F       B      11       4   RUNTIME     
+     _ISHL                                     618A       B      11       3   RUNTIME     
+     _LCMP_P                                   6195      15      21       4   RUNTIME     
+     _LNEG                                     61AA       D      13       3   RUNTIME     
+     _LMULS16x32                               61B7      1F      31       1   RUNTIME     
+     _lDivMod                                  61D6      BE     190       2   RUNTIME     
+     _LDIVU                                    6294       E      14       2   RUNTIME     
+     _NEG_P                                    62A2       F      15       1   RUNTIME     
+     _LMODU                                    62B1      11      17       1   RUNTIME     
+     _ILSEXT                                   62C2       7       7       7   RUNTIME     
+     _CASE_DIRECT_BYTE                         62C9       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        62CE      14      20       5   RUNTIME     
+     _CASE_SEARCH_8                            62E2      17      23       2   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       62F9      1A      26       1   RUNTIME     
 - VARIABLES:
      errno                                     17E2       2       2       3   .common     
 MODULE:                 -- VREGS.C.o (ansis.lib) --
 - PROCEDURES:
-     L_NEGK                                    630E       7       7       2   RUNTIME     
-     L_PSHK                                    6315       8       8       1   RUNTIME     
-     UL_PULK                                   631D       3       3       1   RUNTIME     
-     SL_PULK                                   6320       A      10       1   RUNTIME     
+     L_NEGK                                    6313       7       7       2   RUNTIME     
+     L_PSHK                                    631A       8       8       1   RUNTIME     
+     UL_PULK                                   6322       3       3       1   RUNTIME     
+     SL_PULK                                   6325       A      10       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- projectvectors.c.o --
 - PROCEDURES:
@@ -362,14 +362,14 @@ MODULE:                 -- projectvectors.c.o --
 - VARIABLES:
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     LED_CONTROL                               592D      A2     162       1   .text       
-     LCD_CONTROL                               59CF      1D      29       1   .text       
-     main                                      59EC      57      87       0   .text       
+     LED_CONTROL                               592D      A7     167       1   .text       
+     LCD_CONTROL                               59D4      1D      29       1   .text       
+     main                                      59F1      57      87       0   .text       
 - VARIABLES:
      STRING..d.1                               4126       3       3       1   .rodata1    
      STRING..x.2                               4129       3       3       1   .rodata1    
      STRING.SCI.OK.3                           412C       7       7       1   .rodata1    
-     led_digit                                 100A       2       2      12   .bss        
+     led_digit                                 100A       2       2      10   .bss        
      df                                        17E4       2       2       6   .common     
      RX                                        17E6      23      35       1   .common     
 MODULE:                 -- per_DP256_K79X.c.o --
@@ -399,18 +399,18 @@ MODULE:                 -- per_DP256_K79X.c.o --
      Can4                                       280      40      64       0   .abs_section_280
 MODULE:                 -- dataframe.c.o --
 - PROCEDURES:
-     InitFormatTable                           5A43      32      50       1   .text       
-     DataCheck                                 5A75      27      39       1   .text       
-     GetDataFrame                              5A9C      B5     181       1   .text       
+     InitFormatTable                           5A48      32      50       1   .text       
+     DataCheck                                 5A7A      27      39       1   .text       
+     GetDataFrame                              5AA1      B5     181       1   .text       
 - VARIABLES:
      BYTE_SIZE_TYPE                            4120       6       6       2   .rodata     
      STRING...2d.1d.2d.1d.....s.1              4133      14      20       1   .rodata1    
      VALID_TABLE                               1809      3C      60      10   .common     
 MODULE:                 -- interrupt.c.o --
 - PROCEDURES:
-     ini_interrupt                             5B51       C      12       1   .text       
-     interruptJ_function                       5B5D      1A      26       1   .text       
-     interruptX_function                       5B77      60      96       1   .text       
+     ini_interrupt                             5B56       C      12       1   .text       
+     interruptJ_function                       5B62      1A      26       1   .text       
+     interruptX_function                       5B7C      60      96       1   .text       
 - VARIABLES:
      STRING..0210001..1                        4147       A      10       1   .rodata1    
      STRING..011000.d..2                       4151       B      11       1   .rodata1    
@@ -418,34 +418,34 @@ MODULE:                 -- interrupt.c.o --
      buf                                       1845      1B      27       3   .common     
 MODULE:                 -- lcd.c.o --
 - PROCEDURES:
-     init_LCD                                  5BD7      18      24       1   .text       
-     set_inst_register                         5BEF      26      38       5   .text       
-     write_data                                5C15      26      38       1   .text       
-     write_string                              5C3B      2C      44       1   .text       
-     ms_delay                                  5C67      24      36       2   .text       
+     init_LCD                                  5BDC      18      24       1   .text       
+     set_inst_register                         5BF4      26      38       5   .text       
+     write_data                                5C1A      26      38       1   .text       
+     write_string                              5C40      2C      44       1   .text       
+     ms_delay                                  5C6C      24      36       2   .text       
 - VARIABLES:
 MODULE:                 -- led.c.o --
 - PROCEDURES:
-     init_led                                  5C8B       E      14       1   .text       
-     set_led                                   5C99      15      21       1   .text       
+     init_led                                  5C90       E      14       1   .text       
+     set_led                                   5C9E      15      21       1   .text       
 - VARIABLES:
 MODULE:                 -- seven_seg.c.o --
 - PROCEDURES:
-     init_seven_seg                            5CAE       9       9       1   .text       
-     set_7segment                              5CB7      30      48       2   .text       
+     init_seven_seg                            5CB3       9       9       1   .text       
+     set_7segment                              5CBC      30      48       2   .text       
 - VARIABLES:
 MODULE:                 -- queue.c.o --
 - PROCEDURES:
-     QueuePush                                 5CE7      48      72       1   .text       
-     QueuePop                                  5D2F      32      50       1   .text       
+     QueuePush                                 5CEC      48      72       1   .text       
+     QueuePop                                  5D34      32      50       1   .text       
 - VARIABLES:
      Head                                      100C       2       2       7   .bss        
      Tail                                      100E       2       2       7   .bss        
 MODULE:                 -- sci.c.o --
 - PROCEDURES:
-     init_sci0                                 5D61      15      21       1   .text       
-     write_sci0                                5D76       7       7       4   .text       
-     sci0_handler                              5D7D      54      84       1   .text       
+     init_sci0                                 5D66      15      21       1   .text       
+     write_sci0                                5D7B       7       7       4   .text       
+     sci0_handler                              5D82      54      84       1   .text       
 - VARIABLES:
      rxoffset_sci0                             1010       2       2       5   .bss        
      txbuffer_sci0                             1860       2       2       5   .common     
@@ -453,7 +453,7 @@ MODULE:                 -- sci.c.o --
      rxbuffer_sci0                             1864       2       2       6   .common     
 MODULE:                 -- exception.c.o --
 - PROCEDURES:
-     ExceptionHandling                         5DD1      52      82       1   .text       
+     ExceptionHandling                         5DD6      52      82       1   .text       
 - VARIABLES:
      STRING.OverDataSize.1                     4166       D      13       1   .rodata1    
      STRING.LossDataSize.2                     4173       D      13       1   .rodata1    
@@ -486,7 +486,7 @@ MODULE STATISTIC
   rtshc12.c.o (ansis.lib)                      2    404      0
   VREGS.C.o (ansis.lib)                        0     28      0
   projectvectors.c.o                           0    230      0
-  main.c.o                                    39    278     13
+  main.c.o                                    39    283     13
   per_DP256_K79X.c.o                         684      0      0
   dataframe.c.o                               60    270     26
   interrupt.c.o                               27    134     31
@@ -617,7 +617,7 @@ OBJECT LIST SORTED BY ADDRESS
      pbuf                                      1000       6       6      15   .bss        
      heap_end                                  1006       2       2       3   .bss        
      free_ptr                                  1008       2       2       8   .bss        
-     led_digit                                 100A       2       2      12   .bss        
+     led_digit                                 100A       2       2      10   .bss        
      Head                                      100C       2       2       7   .bss        
      Tail                                      100E       2       2       7   .bss        
      rxoffset_sci0                             1010       2       2       5   .bss        
@@ -734,73 +734,73 @@ OBJECT LIST SORTED BY ADDRESS
      malloc                                    57C1      A6     166       2   .text       
      free                                      5867      C4     196       4   .text       
      software_trap                             592B       2       2      54   .text       
-     LED_CONTROL                               592D      A2     162       1   .text       
-     LCD_CONTROL                               59CF      1D      29       1   .text       
-     main                                      59EC      57      87       0   .text       
-     InitFormatTable                           5A43      32      50       1   .text       
-     DataCheck                                 5A75      27      39       1   .text       
-     GetDataFrame                              5A9C      B5     181       1   .text       
-     ini_interrupt                             5B51       C      12       1   .text       
-     interruptJ_function                       5B5D      1A      26       1   .text       
-     interruptX_function                       5B77      60      96       1   .text       
-     init_LCD                                  5BD7      18      24       1   .text       
-     set_inst_register                         5BEF      26      38       5   .text       
-     write_data                                5C15      26      38       1   .text       
-     write_string                              5C3B      2C      44       1   .text       
-     ms_delay                                  5C67      24      36       2   .text       
-     init_led                                  5C8B       E      14       1   .text       
-     set_led                                   5C99      15      21       1   .text       
-     init_seven_seg                            5CAE       9       9       1   .text       
-     set_7segment                              5CB7      30      48       2   .text       
-     QueuePush                                 5CE7      48      72       1   .text       
-     QueuePop                                  5D2F      32      50       1   .text       
-     init_sci0                                 5D61      15      21       1   .text       
-     write_sci0                                5D76       7       7       4   .text       
-     sci0_handler                              5D7D      54      84       1   .text       
-     ExceptionHandling                         5DD1      52      82       1   .text       
-     F_ADDKL                                   5E23      67     103       1   RUNTIME     
-     _FADD                                     5E8A      15      21       6   RUNTIME     
-     _FSUB                                     5E9F      13      19       2   RUNTIME     
-     _FNEG                                     5EB2       B      11       2   RUNTIME     
-     F_FREXP                                   5EBD      1F      31       1   RUNTIME     
-     frexpf                                    5EDC      19      25       1   RUNTIME     
-     _FCMP                                     5EF5      26      38       5   RUNTIME     
-     F_TOLONGK                                 5F1B      33      51       1   RUNTIME     
-     F_FRLONGK                                 5F4E      1F      31       2   RUNTIME     
-     _FSFLOAT                                  5F6D      12      18       3   RUNTIME     
-     _FUFLOAT                                  5F7F      12      18       1   RUNTIME     
-     _FSTRUNC                                  5F91      11      17       1   RUNTIME     
-     _FUTRUNC                                  5FA2       3       3       2   RUNTIME     
-     F_DIVKL                                   5FA5      8E     142       1   RUNTIME     
-     F_MULKL                                   6033      58      88       1   RUNTIME     
-     _FMUL                                     608B      14      20      10   RUNTIME     
-     _FDIV                                     609F      1E      30       4   RUNTIME     
-     F_PULK                                    60BD      15      21       4   RUNTIME     
-     F_PULL                                    60D2      15      21       4   RUNTIME     
-     F_PSHK                                    60E7      13      19       6   RUNTIME     
-     F_TLK                                     60FA       D      13       1   RUNTIME     
-     F_XGKL                                    6107      21      33       2   RUNTIME     
-     F_CLRK                                    6128       B      11       2   RUNTIME     
-     F_MAXK                                    6133       9       9       2   RUNTIME     
-     F_NORMK                                   613C      3E      62       4   RUNTIME     
-     _BDIVMODS                                 617A       B      11       4   RUNTIME     
-     _ISHL                                     6185       B      11       3   RUNTIME     
-     _LCMP_P                                   6190      15      21       4   RUNTIME     
-     _LNEG                                     61A5       D      13       3   RUNTIME     
-     _LMULS16x32                               61B2      1F      31       1   RUNTIME     
-     _lDivMod                                  61D1      BE     190       2   RUNTIME     
-     _LDIVU                                    628F       E      14       2   RUNTIME     
-     _NEG_P                                    629D       F      15       1   RUNTIME     
-     _LMODU                                    62AC      11      17       1   RUNTIME     
-     _ILSEXT                                   62BD       7       7       7   RUNTIME     
-     _CASE_DIRECT_BYTE                         62C4       5       5       1   RUNTIME     
-     _CASE_CHECKED_BYTE                        62C9      14      20       5   RUNTIME     
-     _CASE_SEARCH_8                            62DD      17      23       2   RUNTIME     
-     _CASE_SEARCH_8_BYTE                       62F4      1A      26       1   RUNTIME     
-     L_NEGK                                    630E       7       7       2   RUNTIME     
-     L_PSHK                                    6315       8       8       1   RUNTIME     
-     UL_PULK                                   631D       3       3       1   RUNTIME     
-     SL_PULK                                   6320       A      10       1   RUNTIME     
+     LED_CONTROL                               592D      A7     167       1   .text       
+     LCD_CONTROL                               59D4      1D      29       1   .text       
+     main                                      59F1      57      87       0   .text       
+     InitFormatTable                           5A48      32      50       1   .text       
+     DataCheck                                 5A7A      27      39       1   .text       
+     GetDataFrame                              5AA1      B5     181       1   .text       
+     ini_interrupt                             5B56       C      12       1   .text       
+     interruptJ_function                       5B62      1A      26       1   .text       
+     interruptX_function                       5B7C      60      96       1   .text       
+     init_LCD                                  5BDC      18      24       1   .text       
+     set_inst_register                         5BF4      26      38       5   .text       
+     write_data                                5C1A      26      38       1   .text       
+     write_string                              5C40      2C      44       1   .text       
+     ms_delay                                  5C6C      24      36       2   .text       
+     init_led                                  5C90       E      14       1   .text       
+     set_led                                   5C9E      15      21       1   .text       
+     init_seven_seg                            5CB3       9       9       1   .text       
+     set_7segment                              5CBC      30      48       2   .text       
+     QueuePush                                 5CEC      48      72       1   .text       
+     QueuePop                                  5D34      32      50       1   .text       
+     init_sci0                                 5D66      15      21       1   .text       
+     write_sci0                                5D7B       7       7       4   .text       
+     sci0_handler                              5D82      54      84       1   .text       
+     ExceptionHandling                         5DD6      52      82       1   .text       
+     F_ADDKL                                   5E28      67     103       1   RUNTIME     
+     _FADD                                     5E8F      15      21       6   RUNTIME     
+     _FSUB                                     5EA4      13      19       2   RUNTIME     
+     _FNEG                                     5EB7       B      11       2   RUNTIME     
+     F_FREXP                                   5EC2      1F      31       1   RUNTIME     
+     frexpf                                    5EE1      19      25       1   RUNTIME     
+     _FCMP                                     5EFA      26      38       5   RUNTIME     
+     F_TOLONGK                                 5F20      33      51       1   RUNTIME     
+     F_FRLONGK                                 5F53      1F      31       2   RUNTIME     
+     _FSFLOAT                                  5F72      12      18       3   RUNTIME     
+     _FUFLOAT                                  5F84      12      18       1   RUNTIME     
+     _FSTRUNC                                  5F96      11      17       1   RUNTIME     
+     _FUTRUNC                                  5FA7       3       3       2   RUNTIME     
+     F_DIVKL                                   5FAA      8E     142       1   RUNTIME     
+     F_MULKL                                   6038      58      88       1   RUNTIME     
+     _FMUL                                     6090      14      20      10   RUNTIME     
+     _FDIV                                     60A4      1E      30       4   RUNTIME     
+     F_PULK                                    60C2      15      21       4   RUNTIME     
+     F_PULL                                    60D7      15      21       4   RUNTIME     
+     F_PSHK                                    60EC      13      19       6   RUNTIME     
+     F_TLK                                     60FF       D      13       1   RUNTIME     
+     F_XGKL                                    610C      21      33       2   RUNTIME     
+     F_CLRK                                    612D       B      11       2   RUNTIME     
+     F_MAXK                                    6138       9       9       2   RUNTIME     
+     F_NORMK                                   6141      3E      62       4   RUNTIME     
+     _BDIVMODS                                 617F       B      11       4   RUNTIME     
+     _ISHL                                     618A       B      11       3   RUNTIME     
+     _LCMP_P                                   6195      15      21       4   RUNTIME     
+     _LNEG                                     61AA       D      13       3   RUNTIME     
+     _LMULS16x32                               61B7      1F      31       1   RUNTIME     
+     _lDivMod                                  61D6      BE     190       2   RUNTIME     
+     _LDIVU                                    6294       E      14       2   RUNTIME     
+     _NEG_P                                    62A2       F      15       1   RUNTIME     
+     _LMODU                                    62B1      11      17       1   RUNTIME     
+     _ILSEXT                                   62C2       7       7       7   RUNTIME     
+     _CASE_DIRECT_BYTE                         62C9       5       5       1   RUNTIME     
+     _CASE_CHECKED_BYTE                        62CE      14      20       5   RUNTIME     
+     _CASE_SEARCH_8                            62E2      17      23       2   RUNTIME     
+     _CASE_SEARCH_8_BYTE                       62F9      1A      26       1   RUNTIME     
+     L_NEGK                                    6313       7       7       2   RUNTIME     
+     L_PSHK                                    631A       8       8       1   RUNTIME     
+     UL_PULK                                   6322       3       3       1   RUNTIME     
+     SL_PULK                                   6325       A      10       1   RUNTIME     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -856,7 +856,7 @@ rtshc12.c.o (ansis.lib):
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0x632A ---- SIZE       2 ---
+------- ROM-ADDRESS: 0x632F ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -943,8 +943,8 @@ _strtod                   USES isspace isdigit _CASE_CHECKED_BYTE _strtod
                                 toupper infinity errno _FNEG 
 malloc                    USES heap_end _heap_ free_ptr _heapcrash_ 
 free                      USES _heap_ heap_end free free_ptr _heapcrash_ 
-LED_CONTROL               USES _CASE_CHECKED_BYTE strtol _ISHL led_digit 
-                                STRING..d.1 STRING..x.2 sscanf BYTE_SIZE_TYPE set_led 
+LED_CONTROL               USES _CASE_CHECKED_BYTE strtol led_digit STRING..d.1 
+                                STRING..x.2 sscanf BYTE_SIZE_TYPE _ISHL set_led 
 LCD_CONTROL               USES write_string 
 main                      USES ini_interrupt RX init_sci0 STRING.SCI.OK.3 
                                 write_sci0 init_led init_seven_seg init_LCD 
@@ -1067,8 +1067,6 @@ DEPENDENCY TREE
  |  |  |     |        
  |  |  |     +- _LNEG                (see above)
  |  |  |        
- |  |  +- _ISHL               
- |  |  |    
  |  |  +- sscanf              
  |  |  |  | 
  |  |  |  +- vsscanf             
@@ -1165,6 +1163,8 @@ DEPENDENCY TREE
  |  |  |     |    
  |  |  |     +- _strtol              (see above)
  |  |  |        
+ |  |  +- _ISHL               
+ |  |  |    
  |  |  +- set_led             
  |  |       
  |  +- LCD_CONTROL         
@@ -1523,6 +1523,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 8
-Total size of all blocks to be downloaded: 9120
+Number of blocks to be downloaded: 7
+Total size of all blocks to be downloaded: 9125
 
