@@ -7,6 +7,7 @@
 #include "stdio.h"
 #include "lcd.h"
 #include "led.h"
+#include "seven_seg.h"
 #include "interrupt.h"
 #include "sci.h"
 

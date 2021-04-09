@@ -2,51 +2,41 @@
 
 DataFrame* df;
 unsigned char RX[35];
-unsigned char LCD_LINE_1[17];
-unsigned char LCD_LINE_2[17];
-unsigned int digit = 0;
-//extern Node* Head;
-//extern Node* Tail;
+unsigned int led_digit = 0;
 extern const u8 BYTE_SIZE_TYPE[6];
 
 void LED_CONTROL(DataFrame* df) {
     unsigned int idx;
-    switch(df->cmdnum) {
+    switch (df->cmdnum) {
     case CMD_LED_CTRL_ON_SEL:
-        digit = digit | (0b1 << atoi(df->data));
-        set_led(digit);
+        led_digit = led_digit | (0b1 << atoi(df->data));
         break;
     case CMD_LED_CTRL_DEC:
-        sscanf(df->data, "%d", &digit);
-        set_led(digit);
+        sscanf(df->data, "%d", &led_digit);
         break;
     case CMD_LED_CTRL_HEX:
-        sscanf(df->data, "%x", &digit);
-        set_led(digit);
+        sscanf(df->data, "%x", &led_digit);
         break;
     case CMD_LED_CTRL_BIN:
         for (idx = 0; idx < BYTE_SIZE_TYPE[df->dataformat]; idx++) {
-            digit = (digit | (*(df->data + idx) - '0' ? 0b1 : 0b0)) << 1;
+            led_digit = (led_digit | (*(df->data + idx) - '0' ? 0b1 : 0b0)) << 1;
         }
-        set_led(digit);
         break;
     case CMD_LED_CTRL_OFF_SEL:
-        digit = (digit & ~(0b1 << atoi(df->data)));
-        set_led(digit);
+        led_digit = led_digit & ~(0b1 << (*(df->data) - '0') );
         break;
     }
+    set_led(led_digit);
 }
 
 void LCD_CONTROL(DataFrame* df) {
     // Low 라인
     if (df->cmdnum == 0) {
-        sprintf(LCD_LINE_1, "Value 1 = %3d", df->data);
-        write_string(0x00, LCD_LINE_1);
+        write_string(0x00, df->data);
     }
     // High 라인
     else if (df->cmdnum == 1) {
-        sprintf(LCD_LINE_2, "Value 2 = %3d", df->data);
-        write_string(0x40, LCD_LINE_2);
+        write_string(0x40, df->data);
     }
 }
 
@@ -65,9 +55,12 @@ void main ()
     // LED 초기화
     init_led();
 
+    // 세븐 세그먼트 초기화
+    init_seven_seg();
+
     // LCD 초기화
     init_LCD();
-    write_string(0x00, "Init Complete");
+    //write_string(0x00, "Init Complete");
 
     // DataFrame 테이블 초기화
     InitFormatTable();
@@ -78,9 +71,9 @@ void main ()
         df = QueuePop();
         // 널 포인터 체크
         if (df) {
-            set_inst_register(CODE_CLR_DISP);
+            //set_inst_register(CODE_CLR_DISP);
             // 명령어 처리
-            switch (df->cmdnum) {
+            switch (df->groupnum) {
             case GROUP_LED:
                 LED_CONTROL(df);
                 break;

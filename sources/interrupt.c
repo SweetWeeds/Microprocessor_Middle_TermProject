@@ -1,9 +1,7 @@
 #include "interrupt.h"
-#include "led.h"
 
-#define SW2_MASK_BIT 0x01
-#define SW3_MASK_BIT 0x02
-#define ALL_LED      0x3ff
+extern unsigned int led_digit;
+unsigned char buf[27];
 
 /*************************************************/
 /*  포트 J를 인터럽트로 사용하도록 설정한다.   */
@@ -15,23 +13,44 @@ void ini_interrupt(void){
 }
 
 
-/***********************************/
-/*  SW2를 누르면 Bar LED 전체 점등  */
-/*  SW3를 누르면 Bar LED 전체 소등  */
-/***********************************/
+/***********************************
+ *  SW2를 누르면 Bar LED 전체 점등  *
+ *  SW3를 누르면 Bar LED 전체 소등  *
+ ***********************************/
 
 void interruptJ_function(void)
 {
-    if(Pim.pifj.byte & SW2_MASK_BIT)      // SW2의 인터럽트 발생 
+    if(Pim.pifj.byte & SW2_MASK_BIT)      // SW2의 인터럽트 발생 (GUI 카운터 상승)
     {    
-        //Regs.portb.byte = ~0b11111111;    // LED 점등
-        set_led(~ALL_LED);
+        write_sci0("<0210001>");
         Pim.pifj.byte |= SW2_MASK_BIT;    // 인터럽트 플래그 초기화 
     }
-    else if(Pim.pifj.byte & SW3_MASK_BIT)  // SW3의 인터럽트 발생
+    else if(Pim.pifj.byte & SW3_MASK_BIT)  // SW3의 인터럽트 발생 (ADC 값 전송)
     {  
-        //Regs.portb.byte = ~0b00000000;   // LED 소등
-        set_led(ALL_LED);
         Pim.pifj.byte |= SW3_MASK_BIT;   // 인터럽트 플래그 초기화 
+    }
+}
+
+/***********************************
+ *  SW1을 누르면 LED 개수 전송      *
+ ***********************************/
+void interruptX_function (void)    //XIRQ interrupt 서비스 함수 (SW1의 인터럽트 발생)
+{
+    unsigned int tmp = led_digit;
+    unsigned int cnt = 0;
+    unsigned int i;
+    for (i = 0; i < 10; i++) {
+        if (tmp & (0b1 << i))
+            cnt++;
+    }
+    if (cnt < 10) {
+        set_7segment(cnt);
+        sprintf(buf, "<011000%d>", cnt);
+        write_sci0(buf);
+    }
+    else {
+        set_7segment(cnt);
+        sprintf(buf, "<011000X>");
+        write_sci0(buf);
     }
 }

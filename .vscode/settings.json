@@ -8,6 +8,7 @@
         "led.h": "c",
         "queue.h": "c",
         "main.h": "c",
-        "sci.h": "c"
+        "sci.h": "c",
+        "interrupt.h": "c"
     }
 }

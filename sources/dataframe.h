@@ -9,7 +9,7 @@
 #include "exception.h"
 
 #define MAX_FRAME_SIZE  24	// 최대 데이터 프레임 크기: 24바이트
-#define MAX_DATA_SIZE   17	// 최대 데이터 크기
+#define MAX_DATA_SIZE   16	// 최대 데이터 크기
 
 #define D1  0
 #define D2  1
@@ -60,7 +60,7 @@ typedef struct {
 	u16 cmdclass;
 	u16 cmdnum;
 	u16 dataformat;
-	u8 data[MAX_DATA_SIZE];
+	u8 data[MAX_DATA_SIZE + 6];
 } DataFrame;
 
 /* Function Prototypes */

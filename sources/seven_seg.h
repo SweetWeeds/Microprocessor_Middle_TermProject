@@ -15,21 +15,11 @@
 #define SEVEN_SEGMENT_DP  0x80
 
 typedef enum {
-    SEG_A = SEVEN_SEGMENT_A,
-    SEG_B = SEVEN_SEGMENT_B,
-    SEG_C = SEVEN_SEGMENT_C,
-    SEG_D = SEVEN_SEGMENT_D,
-    SEG_E = SEVEN_SEGMENT_E,
-    SEG_F = SEVEN_SEGMENT_F
-} S_SEG_PIN;
-
-typedef enum {
     CLOCK_WISE = 0,
     COUNTER_CLOCK_WISE = 1
 } DIRECTION;
 
 void init_seven_seg(void);
-void set_seven_seg(S_SEG_PIN sp);
-void rotate_seg(DIRECTION dir);
+void set_7segment(unsigned int number);
 
 #endif /* SEVEN_SEG */
