@@ -2,7 +2,7 @@
 
 #include "dataframe.h"
 
-char VALID_TABLE[6][2][5];	// VALID_TABLE[GROUP_NUM][CMD_CLASS][CMD_NUM] = DATA_FORMAT
+char BYTE_SIZE_TABLE[6][2][5];	// BYTE_SIZE_TABLE[GROUP_NUM][CMD_CLASS][CMD_NUM] = DATA_FORMAT
 const u8 BYTE_SIZE_TYPE[6] = { 1, 2, 3, 4, 10, 16 };    // Byte Format 값 당 Byte size
 
 // 커맨드 테이블 초기화
@@ -11,27 +11,27 @@ void InitFormatTable() {
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 2; j++) {
             for (k = 0; k < 5; k++) {
-                VALID_TABLE[i][j][k] = -1;
+                BYTE_SIZE_TABLE[i][j][k] = -1;
             }
         }
     }
 	// LED
-	VALID_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_ON_SEL]  = D1;
-	VALID_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_DEC]     = D4;
-	VALID_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_HEX]     = D3;
-	VALID_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_BIN]     = D10;
-	VALID_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_OFF_SEL] = D1;
+	BYTE_SIZE_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_ON_SEL]  = D1;
+	BYTE_SIZE_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_DEC]     = D4;
+	BYTE_SIZE_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_HEX]     = D3;
+	BYTE_SIZE_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_BIN]     = D10;
+	BYTE_SIZE_TABLE[GROUP_LED][CMD_CLASS_CONTROL][CMD_LED_CTRL_OFF_SEL] = D1;
 	// SEVEN_SEG
-	VALID_TABLE[GROUP_SEG][CMD_CLASS_UPDATE][CMD_SEG_UPDATE_LED_CNT] = D1;
+	BYTE_SIZE_TABLE[GROUP_SEG][CMD_CLASS_UPDATE][CMD_SEG_UPDATE_LED_CNT] = D1;
 	// SWITCH
-	VALID_TABLE[GROUP_SWITCH][CMD_CLASS_UPDATE][CMD_SWITCH_UPDATE_STAT] = D1;
+	BYTE_SIZE_TABLE[GROUP_SWITCH][CMD_CLASS_UPDATE][CMD_SWITCH_UPDATE_STAT] = D1;
 	// LCD
-	VALID_TABLE[GROUP_LCD][CMD_CLASS_CONTROL][CMD_LCD_CTRL_LOW]  = D16;
-	VALID_TABLE[GROUP_LCD][CMD_CLASS_CONTROL][CMD_LCD_CTRL_HIGH] = D16;
+	BYTE_SIZE_TABLE[GROUP_LCD][CMD_CLASS_CONTROL][CMD_LCD_CTRL_LOW]  = D16;
+	BYTE_SIZE_TABLE[GROUP_LCD][CMD_CLASS_CONTROL][CMD_LCD_CTRL_HIGH] = D16;
 	// ADC
-	VALID_TABLE[GROUP_ADC][CMD_CLASS_UPDATE][CMD_ADC_UPDATE] = D1;
+	BYTE_SIZE_TABLE[GROUP_ADC][CMD_CLASS_UPDATE][CMD_ADC_UPDATE] = D1;
 	// SYS
-	VALID_TABLE[GROUP_SYS][CMD_CLASS_UPDATE][CMD_SYS_UPDATE] = D1;
+	BYTE_SIZE_TABLE[GROUP_SYS][CMD_CLASS_UPDATE][CMD_SYS_UPDATE] = D1;
 }
 
 unsigned int DataCheck(u8* buf, u8 byte_size) {
@@ -65,19 +65,35 @@ DataFrame* GetDataFrame(const u8* buf) {
 		free(df);
 		return NULL;
 	}
+
 	// 예외 처리: OverClassCnt (전송된 명령의 Class 번호가 범위를 벗어남)
-	if (VALID_TABLE[df->groupnum][df->cmdclass][df->cmdnum] == -1) {
+	if (df->cmdclass != CMD_CLASS_CONTROL) {
 		ExceptionHandling(OverClassCnt);
 		free(df);
 		return NULL;
+    }
+    
+    if (BYTE_SIZE_TABLE[df->groupnum][df->cmdclass][df->cmdnum] == -1) {
+        // 예외 처리: CantFindCmd_LED (전송된 명령어를 LED 그룹을 찾을 수 없다)
+        if (df->groupnum == GROUP_LED) {
+            ExceptionHandling(CantFindCmd_LED);
+        }
+        // 예외 처리: CantFindCmd_LCD (전송된 명령어를 LCD 그룹을 찾을 수 없다)
+        else if (df->groupnum == GROUP_LCD) {
+            ExceptionHandling(CantFindCmd_LCD);
+        }
+        free(df);
+        return NULL;
 	}
+
 	// 예외 처리: OverFormatCnt (전송된 명령의 Format 번호가 범위를 벗어남)
-	if (VALID_TABLE[df->groupnum][df->cmdclass][df->cmdnum] != df->dataformat) {
+	if (BYTE_SIZE_TABLE[df->groupnum][df->cmdclass][df->cmdnum] != df->dataformat) {
 		ExceptionHandling(OverFormatCnt);
 		free(df);
 		return NULL;
 	}
-	// 예외 처리: Data 크기 검증 (Timeout, OverDataSize, LossDataSize)
+
+    // 예외 처리: Data 크기 검증 (Timeout, OverDataSize, LossDataSize)
 	ec = DataCheck(df->data, BYTE_SIZE_TYPE[df->dataformat]);
 	if (ec != Normal) {
 		ExceptionHandling(ec);
