@@ -63,6 +63,7 @@ void sci0_handler(void)
     if(Sci0.scisr1.bit.rdrf == 1)   //수신 상태이면 RDRF는 반드시 1이 되어있다.
     {
         *rxbuffer_sci0 = Sci0.scidrl.byte;  // scidrl에 저장된 1bit 수신 데이터를 수신 버퍼에 저장
+        // ETX 입력
         if ((*rxbuffer_sci0) == '>') {
             *(rxbuffer_sci0 + 1) = 0;
             rxbuffer_sci0 -= rxoffset_sci0;

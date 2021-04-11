@@ -3,6 +3,7 @@
 
 /*Includes*/
 #include "projectglobals.h"
+#include "atd.h"
 #include "seven_seg.h"
 #include "sci.h"
 #include "stdio.h"

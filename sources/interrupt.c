@@ -20,13 +20,17 @@ void ini_interrupt(void){
 
 void interruptJ_function(void)
 {
+    unsigned char atd_value;
     if(Pim.pifj.byte & SW2_MASK_BIT)      // SW2의 인터럽트 발생 (GUI 카운터 상승)
-    {    
+    { 
         write_sci0("<0210001>");
         Pim.pifj.byte |= SW2_MASK_BIT;    // 인터럽트 플래그 초기화 
     }
     else if(Pim.pifj.byte & SW3_MASK_BIT)  // SW3의 인터럽트 발생 (ADC 값 전송)
-    {  
+    {
+        atd_value = convert_value(get_atd0(ANALOG_INPUT_CHANNEL));  // 아날로그 값 -> 0 ~ 9
+        sprintf(buf, "<041000%d>", atd_value);
+        write_sci0(buf);
         Pim.pifj.byte |= SW3_MASK_BIT;   // 인터럽트 플래그 초기화 
     }
 }
@@ -36,11 +40,10 @@ void interruptJ_function(void)
  ***********************************/
 void interruptX_function (void)    //XIRQ interrupt 서비스 함수 (SW1의 인터럽트 발생)
 {
-    unsigned int tmp = led_digit;
     unsigned int cnt = 0;
     unsigned int i;
     for (i = 0; i < 10; i++) {
-        if (tmp & (0b1 << i))
+        if (led_digit & (0b1 << i))
             cnt++;
     }
     if (cnt < 10) {

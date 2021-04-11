@@ -18,6 +18,7 @@ void LED_CONTROL(DataFrame* df) {
         sscanf(df->data, "%x", &led_digit);
         break;
     case CMD_LED_CTRL_BIN:
+        led_digit = 0;
         for (idx = 0; idx < BYTE_SIZE_TYPE[df->dataformat]; idx++) {
             led_digit |= ( ( *(df->data + 9 - idx) - '0' ) ? 0b1 : 0b0) << idx;
         }
@@ -54,6 +55,9 @@ void main ()
 
     // LED 초기화
     init_led();
+
+    // ATD 초기화
+    init_atd0();
 
     // 세븐 세그먼트 초기화
     init_seven_seg();

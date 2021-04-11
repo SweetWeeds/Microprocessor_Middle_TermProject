@@ -10,6 +10,7 @@
 #include "seven_seg.h"
 #include "interrupt.h"
 #include "sci.h"
+#include "atd.h"
 
 void LED_CONTROL(DataFrame* df);
 void LCD_CONTROL(DataFrame* df);
