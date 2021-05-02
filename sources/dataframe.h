@@ -9,6 +9,7 @@
 #include "exception.h"
 
 #define MAX_FRAME_SIZE  24	// 최대 데이터 프레임 크기: 24바이트
+#define TIMEOUT_SIZE    MAX_FRAME_SIZE + 5  // Timtout 기준 : 최대 데이터 프레임 크기 + 5 이상
 #define MAX_DATA_SIZE   16	// 최대 데이터 크기
 
 // Data 크기

@@ -1,7 +1,7 @@
 #include "main.h"
 
 DataFrame* df;
-unsigned char RX[35];
+unsigned char RX[RX_BUFFER_SIZE];
 unsigned int led_digit = 0;
 extern const u8 BYTE_SIZE_TYPE[6];
 

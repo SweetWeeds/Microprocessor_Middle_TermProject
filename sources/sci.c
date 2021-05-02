@@ -8,6 +8,7 @@ unsigned char *txbuffer_sci0; //text를 저장하는 버퍼이다.
 int txoffset_sci0;            //text문자열 길이를 알기위해 필요한 변수이다.
 unsigned char *rxbuffer_sci0; //rx를 저장하는 버퍼이다.
 unsigned int rxoffset_sci0 = 0;
+unsigned char ProtocolStart = 0;   // STX 시작 여부 판별
 
 //extern Node* Head;
 //extern Node* Tail;
@@ -63,20 +64,37 @@ void sci0_handler(void)
     if(Sci0.scisr1.bit.rdrf == 1)   //수신 상태이면 RDRF는 반드시 1이 되어있다.
     {
         *rxbuffer_sci0 = Sci0.scidrl.byte;  // scidrl에 저장된 1bit 수신 데이터를 수신 버퍼에 저장
-        // ETX 입력
-        if ((*rxbuffer_sci0) == '>') {
+        // STX 판별: '<'가 입력된 이후의 데이터들을 유효하다고 판단.
+        if (*rxbuffer_sci0 == '<') {
+            ProtocolStart = 1;
+            rxbuffer_sci0 -= (rxoffset_sci0 - 1);
+            rxoffset_sci0 = 1;
+        }
+        // ETX 판별
+        else if (ProtocolStart && (*rxbuffer_sci0) == '>') {
             *(rxbuffer_sci0 + 1) = 0;
             rxbuffer_sci0 -= rxoffset_sci0;
             rxoffset_sci0 = 0;
             df = GetDataFrame(rxbuffer_sci0);
             if (df) QueuePush(df);
+            ProtocolStart = 0;
         }
-        else {
+        // 유효 데이터 입력
+        else if (ProtocolStart) {
             rxoffset_sci0++;
             rxbuffer_sci0++;
+            // 예외 처리: Timeout 발생
+            if (rxoffset_sci0 >= TIMEOUT_SIZE) {
+                // 오프셋 초기화
+                rxbuffer_sci0 -= rxoffset_sci0;
+                rxoffset_sci0 = 0;
+                // 프로토콜 스타트 초기화
+                ProtocolStart = 0;
+                ExceptionHandling(Timeout);
+            }
         }
     }
-    else if (Sci0.scisr1.bit.tdre == 1)  
+    else if (Sci0.scisr1.bit.tdre == 1)
     /*수신 상태가 아닌 송신 상태이면 TDRE가 1이되고 위와 같이 status와 비교해 주면 된다. */
     {
         Sci0.scidrl.byte = *txbuffer_sci0;    // scidrl에 송신할 데이터 저장
